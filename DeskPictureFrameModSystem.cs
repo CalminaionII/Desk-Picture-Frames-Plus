@@ -3,15 +3,12 @@ using System.IO;
 using System.Reflection;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
-using Vintagestory.API.Config;
 using Vintagestory.API.Server;
 
 namespace DeskPictureFrame
 {
     public class DeskPictureFrame : ModSystem
     {
-        private string configFolder;
-
         public override double ExecuteOrder() => 0.0;
 
         public override void StartPre(ICoreAPI api)
@@ -26,11 +23,11 @@ namespace DeskPictureFrame
 
             if (api.Side == EnumAppSide.Client)
             {
-                configFolder = Path.Combine(GamePaths.ModConfig, "deskpictureframe");
+                string configFolder = DeskPictureFrameConstants.ConfigFolder;
                 Directory.CreateDirectory(configFolder);
-                api.Assets.AddModOrigin("deskpictureframe", configFolder);
-                CreateFolderStructure(api);
-                PopulateDefaults(api);
+                api.Assets.AddModOrigin(DeskPictureFrameConstants.ModId, configFolder);
+                CreateFolderStructure(api, configFolder);
+                PopulateDefaults(api, configFolder);
                 api.Logger.Notification($"[DeskPictureFrame] Custom images folder ready: {configFolder}");
             }
         }
@@ -41,30 +38,11 @@ namespace DeskPictureFrame
             api.RegisterBlockEntityClass("BEDeskPictureFrame", typeof(BEDeskPictureFrame));
         }
 
-        private void CreateFolderStructure(ICoreAPI api)
+        private void CreateFolderStructure(ICoreAPI api, string configFolder)
         {
-            string[] folders =
+            foreach (var folder in DeskPictureFrameConstants.ImageFolders)
             {
-                "textures/desk-landscape-images/image1",
-                "textures/desk-landscape-images/image2",
-                "textures/desk-landscape-single-images/image1",
-                "textures/desk-portrait-images/image1",
-                "textures/desk-portrait-images/image2",
-                "textures/desk-portrait-images/image3",
-                "textures/desk-portrait-single-images/image1",
-                "textures/grouped-landscape-images/image1",
-                "textures/grouped-landscape-images/image2",
-                "textures/grouped-landscape-images/image3",
-                "textures/grouped-portrait-images/image1",
-                "textures/grouped-portrait-images/image2",
-                "textures/grouped-portrait-images/image3",
-                "textures/grouped-portrait-images/image4",
-                "textures/wall-landscape-image/image",
-                "textures/wall-portrait-image/image"
-            };
-
-            foreach (var relFolder in folders)
-            {
+                string relFolder = Path.Combine("textures", folder);
                 string fullPath = Path.Combine(configFolder, relFolder);
                 if (!Directory.Exists(fullPath))
                 {
@@ -74,38 +52,17 @@ namespace DeskPictureFrame
             }
         }
 
-        private void PopulateDefaults(ICoreAPI api)
+        private void PopulateDefaults(ICoreAPI api, string configFolder)
         {
             var assembly = Assembly.GetExecutingAssembly();
-
-            (string RelFolder, int Count)[] folderImageCounts = new[]
-            {
-                ("textures/desk-landscape-images/image1", 5),
-                ("textures/desk-landscape-images/image2", 5),
-                ("textures/desk-landscape-single-images/image1", 5),
-                ("textures/desk-portrait-images/image1", 5),
-                ("textures/desk-portrait-images/image2", 5),
-                ("textures/desk-portrait-images/image3", 5),
-                ("textures/desk-portrait-single-images/image1", 5),
-                ("textures/grouped-landscape-images/image1", 5),
-                ("textures/grouped-landscape-images/image2", 5),
-                ("textures/grouped-landscape-images/image3", 5),
-                ("textures/grouped-portrait-images/image1", 5),
-                ("textures/grouped-portrait-images/image2", 5),
-                ("textures/grouped-portrait-images/image3", 5),
-                ("textures/grouped-portrait-images/image4", 5),
-                ("textures/wall-landscape-image/image", 5),
-                ("textures/wall-portrait-image/image", 5)
-            };
-
             int totalCopied = 0;
 
-            foreach (var item in folderImageCounts)
+            foreach (var folder in DeskPictureFrameConstants.ImageFolders)
             {
-                string targetDir = Path.Combine(configFolder, item.RelFolder);
+                string targetDir = Path.Combine(configFolder, "textures", folder);
                 Directory.CreateDirectory(targetDir);
 
-                for (int i = 1; i <= item.Count; i++)
+                for (int i = 1; i <= DeskPictureFrameConstants.DefaultImageCount; i++)
                 {
                     string destFile = Path.Combine(targetDir, $"{i}.png");
                     if (File.Exists(destFile)) continue;
@@ -144,9 +101,9 @@ namespace DeskPictureFrame
 
         public override void StartClientSide(ICoreClientAPI api)
         {
-            string remotePlayersFolder = Path.Combine(GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers");
+            string remotePlayersFolder = DeskPictureFrameConstants.RemotePlayersRoot;
             Directory.CreateDirectory(remotePlayersFolder);
-            api.Assets.AddModOrigin("deskpictureframe", remotePlayersFolder);
+            api.Assets.AddModOrigin(DeskPictureFrameConstants.ModId, remotePlayersFolder);
             api.Logger.Notification($"[DeskPictureFrame] Remote players cache folder ready: {remotePlayersFolder}");
 
             networkManager = new DeskPictureFrameNetworkManager();

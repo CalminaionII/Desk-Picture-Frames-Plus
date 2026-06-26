@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
-using Vintagestory.API.Config;
 using Vintagestory.API.Server;
 
 namespace DeskPictureFrame
@@ -34,7 +33,7 @@ namespace DeskPictureFrame
 
         public void InitServer(ICoreServerAPI sapi)
         {
-            cacheFolder = Path.Combine(GamePaths.DataPath, "ModData", "deskpictureframe", "playercache");
+            cacheFolder = DeskPictureFrameConstants.ServerCacheFolder;
             Directory.CreateDirectory(cacheFolder);
 
             LoadCacheFromDisk(sapi);
@@ -72,7 +71,7 @@ namespace DeskPictureFrame
         // CLIENT: Read local images and send to server
         private void UploadLocalImagesToServer(ICoreClientAPI capi)
         {
-            string localFolder = Path.Combine(GamePaths.ModConfig, "deskpictureframe", "textures");
+            string localFolder = Path.Combine(DeskPictureFrameConstants.ConfigFolder, "textures");
             if (!Directory.Exists(localFolder)) return;
 
             string[] imageFiles = Directory.GetFiles(localFolder, "*.png", SearchOption.AllDirectories);
@@ -87,7 +86,7 @@ namespace DeskPictureFrame
 
                     byte[] data = File.ReadAllBytes(file);
 
-                    if (data.Length > 1_000_000)
+                    if (data.Length > DeskPictureFrameConstants.MaxImageSizeBytes)
                     {
                         capi.Logger.Warning($"[DeskPictureFrame] Skipping {relative} - exceeds 1MB size limit.");
                         continue;
@@ -112,14 +111,12 @@ namespace DeskPictureFrame
         // SERVER: Receive and cache uploaded image
         private void OnServerReceiveUpload(IServerPlayer player, ImageUploadPacket packet)
         {
-            // Sanitise: no path traversal
-            if (packet.ImageKey == null || packet.ImageKey.Contains("..") || Path.IsPathRooted(packet.ImageKey))
+            if (!DeskPictureFrameConstants.IsValidImageKey(packet.ImageKey))
             {
                 serverApi.Logger.Warning($"[DeskPictureFrame] Rejected suspicious image key from {player.PlayerName}: {packet.ImageKey}");
                 return;
             }
 
-            // Sanitise: must end in /1 through /5
             string fileName = Path.GetFileName(packet.ImageKey);
             if (!System.Text.RegularExpressions.Regex.IsMatch(fileName, @"^[1-5]$"))
             {
@@ -127,48 +124,20 @@ namespace DeskPictureFrame
                 return;
             }
 
-            // Sanitise: must be a valid known folder path
-            string[] validFolders = {
-        "desk-landscape-images/image1",
-        "desk-landscape-images/image2",
-        "desk-landscape-single-images/image1",
-        "desk-portrait-images/image1",
-        "desk-portrait-images/image2",
-        "desk-portrait-images/image3",
-        "desk-portrait-single-images/image1",
-        "grouped-landscape-images/image1",
-        "grouped-landscape-images/image2",
-        "grouped-landscape-images/image3",
-        "grouped-portrait-images/image1",
-        "grouped-portrait-images/image2",
-        "grouped-portrait-images/image3",
-        "grouped-portrait-images/image4",
-        "wall-landscape-image/image",
-        "wall-portrait-image/image"
-    };
-
             string folder = packet.ImageKey.Substring(0, packet.ImageKey.LastIndexOf('/'));
-            bool validFolder = false;
-            foreach (var f in validFolders)
-                if (folder == f) { validFolder = true; break; }
-
-            if (!validFolder)
+            if (!DeskPictureFrameConstants.IsValidImageFolder(folder))
             {
                 serverApi.Logger.Warning($"[DeskPictureFrame] Rejected unknown folder from {player.PlayerName}: {packet.ImageKey}");
                 return;
             }
 
-            // Sanitise: PNG header check (first 8 bytes)
-            if (packet.ImageData == null || packet.ImageData.Length < 8 ||
-                packet.ImageData[0] != 0x89 || packet.ImageData[1] != 0x50 ||
-                packet.ImageData[2] != 0x4E || packet.ImageData[3] != 0x47)
+            if (!DeskPictureFrameConstants.IsValidPngData(packet.ImageData))
             {
                 serverApi.Logger.Warning($"[DeskPictureFrame] Rejected non-PNG data from {player.PlayerName}: {packet.ImageKey}");
                 return;
             }
 
-            // Sanitise: size limit
-            if (packet.ImageData.Length > 1_000_000)
+            if (packet.ImageData.Length > DeskPictureFrameConstants.MaxImageSizeBytes)
             {
                 serverApi.Logger.Warning($"[DeskPictureFrame] Rejected oversized image from {player.PlayerName}: {packet.ImageKey}");
                 return;
@@ -203,17 +172,13 @@ namespace DeskPictureFrame
         // CLIENT: Receive another player's image and write to disk
         private void OnClientReceiveImage(ImageResponsePacket packet)
         {
-            // Validate PNG header before accepting
-            if (packet.ImageData == null || packet.ImageData.Length < 8 ||
-                packet.ImageData[0] != 0x89 || packet.ImageData[1] != 0x50 ||
-                packet.ImageData[2] != 0x4E || packet.ImageData[3] != 0x47)
+            if (!DeskPictureFrameConstants.IsValidPngData(packet.ImageData))
             {
                 clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected invalid image data for: {packet.OwnerUid}/{packet.ImageKey}");
                 return;
             }
 
-            // Also validate the image key
-            if (packet.ImageKey == null || packet.ImageKey.Contains("..") || Path.IsPathRooted(packet.ImageKey))
+            if (!DeskPictureFrameConstants.IsValidImageKey(packet.ImageKey))
             {
                 clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected suspicious image key: {packet.ImageKey}");
                 return;
@@ -228,7 +193,7 @@ namespace DeskPictureFrame
                 // Write to ModData
                 try
                 {
-                    string remoteFolder = Path.Combine(GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers", packet.OwnerUid, "textures");
+                    string remoteFolder = DeskPictureFrameConstants.RemotePlayerTexturesFolder(packet.OwnerUid);
                     string filePath = Path.Combine(remoteFolder, packet.ImageKey + ".png");
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                     File.WriteAllBytes(filePath, packet.ImageData);
@@ -257,7 +222,7 @@ namespace DeskPictureFrame
                 return;
             }
 
-            string remoteFolder = Path.Combine(GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers", ownerUid, "textures");
+            string remoteFolder = DeskPictureFrameConstants.RemotePlayerTexturesFolder(ownerUid);
             if (Directory.Exists(remoteFolder))
             {
                 clientApi?.Logger.Notification($"[DeskPictureFrame] Found disk cache for player: {ownerUid}");

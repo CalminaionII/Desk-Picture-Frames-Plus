@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
-using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
@@ -54,8 +53,7 @@ namespace DeskPictureFrame
 
             if (isRemoteOwner)
             {
-                string remoteTexturesFolder = Path.Combine(
-                    GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers", OwnerUid, "textures");
+                string remoteTexturesFolder = DeskPictureFrameConstants.RemotePlayerTexturesFolder(OwnerUid);
 
                 bool hasTextures = Directory.Exists(remoteTexturesFolder);
 
@@ -76,9 +74,8 @@ namespace DeskPictureFrame
                 // Have the remote textures, register their folder as an asset origin if not already done
                 if (!registeredOrigins.Contains(OwnerUid))
                 {
-                    string remotePlayerRoot = Path.Combine(
-                        GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers", OwnerUid);
-                    capi.Assets.AddModOrigin("deskpictureframe", remotePlayerRoot);
+                    string remotePlayerRoot = DeskPictureFrameConstants.RemotePlayerFolder(OwnerUid);
+                    capi.Assets.AddModOrigin(DeskPictureFrameConstants.ModId, remotePlayerRoot);
                     registeredOrigins.Add(OwnerUid);
                     capi.Logger.Notification($"[DeskPictureFrame] Registered remote origin for: {OwnerUid}");
                 }
