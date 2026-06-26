@@ -72,7 +72,11 @@ namespace DeskPictureFrame
                 }
 
                 Block frameBlock = world.GetBlock(frameCode);
-                if (frameBlock == null) continue;
+                if (frameBlock == null)
+                {
+                    world.Logger.Warning($"[DeskPictureFrame] Could not resolve block for drop: {frameCode}");
+                    continue;
+                }
 
                 ItemStack stack = new ItemStack(frameBlock);
                 if (stack.Block != null)

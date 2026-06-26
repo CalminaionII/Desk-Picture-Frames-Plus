@@ -149,7 +149,14 @@ namespace DeskPictureFrame
                 "wall-portrait-image/image"
             };
 
-            string folder = packet.ImageKey.Substring(0, packet.ImageKey.LastIndexOf('/'));
+            int lastSlash = packet.ImageKey.LastIndexOf('/');
+            if (lastSlash <= 0)
+            {
+                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected malformed image key from {player.PlayerName}: {packet.ImageKey}");
+                return;
+            }
+
+            string folder = packet.ImageKey.Substring(0, lastSlash);
             bool validFolder = false;
             foreach (var f in validFolders)
                 if (folder == f) { validFolder = true; break; }
@@ -262,7 +269,16 @@ namespace DeskPictureFrame
                 if (pendingCallbacks.TryGetValue(packet.OwnerUid, out var callbacks))
                 {
                     foreach (var cb in callbacks)
-                        cb?.Invoke();
+                    {
+                        try
+                        {
+                            cb?.Invoke();
+                        }
+                        catch (Exception cbEx)
+                        {
+                            clientApi?.Logger.Error($"[DeskPictureFrame] Callback error for {packet.OwnerUid}: {cbEx.Message}");
+                        }
+                    }
                     pendingCallbacks.Remove(packet.OwnerUid);
                 }
             }
@@ -300,7 +316,14 @@ namespace DeskPictureFrame
 
             if (!pendingRequests.TryAdd(ownerUid, 0)) return;
 
-            clientChannel?.SendPacket(new ImageRequestPacket
+            if (clientChannel == null)
+            {
+                clientApi?.Logger.Warning($"[DeskPictureFrame] Cannot request textures for {ownerUid}: network channel not initialized.");
+                pendingRequests.Remove(ownerUid);
+                return;
+            }
+
+            clientChannel.SendPacket(new ImageRequestPacket
             {
                 OwnerUid = ownerUid
             });
@@ -342,8 +365,15 @@ namespace DeskPictureFrame
 
                 foreach (string file in Directory.GetFiles(playerFolder, "*.png"))
                 {
-                    string imageKey = Path.GetFileNameWithoutExtension(file).Replace("_", "/");
-                    playerImages[imageKey] = File.ReadAllBytes(file);
+                    try
+                    {
+                        string imageKey = Path.GetFileNameWithoutExtension(file).Replace("_", "/");
+                        playerImages[imageKey] = File.ReadAllBytes(file);
+                    }
+                    catch (Exception ex)
+                    {
+                        sapi.Logger.Error($"[DeskPictureFrame] Failed to load cached image {file}: {ex.Message}");
+                    }
                 }
 
                 serverImageCache[playerUid] = playerImages;
