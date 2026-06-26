@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.IO;
+using System.Text.RegularExpressions;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -17,6 +18,7 @@ namespace DeskPictureFrame
         private bool remoteTexturesRequested = false;
         private bool remoteTexturesReady = false;
         private static ConcurrentDictionary<string, byte> registeredOrigins = new();
+        private static readonly Regex SafeUidRegex = new Regex(@"^[a-zA-Z0-9_-]+$", RegexOptions.Compiled);
 
         public void InitializeWithAngle()
         {
@@ -56,6 +58,12 @@ namespace DeskPictureFrame
             if (capi == null) return;
             if (OwnerUid == null || capi.World.Player == null) return;
             if (OwnerUid == capi.World.Player.PlayerUID) return;
+
+            if (!SafeUidRegex.IsMatch(OwnerUid))
+            {
+                capi.Logger.Warning($"[DeskPictureFrame] Rejected invalid owner UID: {OwnerUid}");
+                return;
+            }
 
             string remoteTexturesFolder = Path.Combine(
                 GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers", OwnerUid, "textures");
@@ -105,6 +113,13 @@ namespace DeskPictureFrame
             bool isRemoteOwner = OwnerUid != null
                 && capi.World.Player != null
                 && OwnerUid != capi.World.Player.PlayerUID;
+
+            if (isRemoteOwner && !SafeUidRegex.IsMatch(OwnerUid))
+            {
+                capi.Logger.Warning($"[DeskPictureFrame] Rejected invalid owner UID: {OwnerUid}");
+                BuildMesh(capi);
+                return;
+            }
 
             if (isRemoteOwner && !remoteTexturesReady)
             {

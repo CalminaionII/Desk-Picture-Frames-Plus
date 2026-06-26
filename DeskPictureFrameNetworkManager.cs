@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -29,6 +30,51 @@ namespace DeskPictureFrame
         private Dictionary<string, List<Action>> pendingCallbacks = new();
 
         public static DeskPictureFrameNetworkManager Instance { get; set; }
+
+        private static readonly Regex SafeUidRegex = new Regex(@"^[a-zA-Z0-9_-]+$", RegexOptions.Compiled);
+
+        private static readonly string[] ValidImageFolders = {
+            "desk-landscape-images/image1",
+            "desk-landscape-images/image2",
+            "desk-landscape-single-images/image1",
+            "desk-portrait-images/image1",
+            "desk-portrait-images/image2",
+            "desk-portrait-images/image3",
+            "desk-portrait-single-images/image1",
+            "grouped-landscape-images/image1",
+            "grouped-landscape-images/image2",
+            "grouped-landscape-images/image3",
+            "grouped-portrait-images/image1",
+            "grouped-portrait-images/image2",
+            "grouped-portrait-images/image3",
+            "grouped-portrait-images/image4",
+            "wall-landscape-image/image",
+            "wall-portrait-image/image"
+        };
+
+        private static bool IsValidUid(string uid)
+        {
+            return !string.IsNullOrEmpty(uid) && SafeUidRegex.IsMatch(uid);
+        }
+
+        private static bool IsValidImageKey(string imageKey)
+        {
+            if (string.IsNullOrEmpty(imageKey) || imageKey.Contains("..") || Path.IsPathRooted(imageKey))
+                return false;
+
+            string fileName = Path.GetFileName(imageKey);
+            if (!Regex.IsMatch(fileName, @"^[1-5]$"))
+                return false;
+
+            int lastSlash = imageKey.LastIndexOf('/');
+            if (lastSlash < 0) return false;
+            string folder = imageKey.Substring(0, lastSlash);
+
+            foreach (var f in ValidImageFolders)
+                if (folder == f) return true;
+
+            return false;
+        }
 
         public void InitServer(ICoreServerAPI sapi)
         {
@@ -114,53 +160,12 @@ namespace DeskPictureFrame
         {
             string playerUid = player.PlayerUID;
 
-            // Sanitise: no path traversal
-            if (packet.ImageKey == null || packet.ImageKey.Contains("..") || Path.IsPathRooted(packet.ImageKey))
+            if (!IsValidImageKey(packet.ImageKey))
             {
-                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected suspicious image key from {player.PlayerName}: {packet.ImageKey}");
+                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected invalid image key from {player.PlayerName}: {packet.ImageKey}");
                 return;
             }
 
-            // Sanitise: must end in /1 through /5
-            string fileName = Path.GetFileName(packet.ImageKey);
-            if (!System.Text.RegularExpressions.Regex.IsMatch(fileName, @"^[1-5]$"))
-            {
-                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected invalid image name from {player.PlayerName}: {packet.ImageKey}");
-                return;
-            }
-
-            // Sanitise: must be a valid known folder path
-            string[] validFolders = {
-                "desk-landscape-images/image1",
-                "desk-landscape-images/image2",
-                "desk-landscape-single-images/image1",
-                "desk-portrait-images/image1",
-                "desk-portrait-images/image2",
-                "desk-portrait-images/image3",
-                "desk-portrait-single-images/image1",
-                "grouped-landscape-images/image1",
-                "grouped-landscape-images/image2",
-                "grouped-landscape-images/image3",
-                "grouped-portrait-images/image1",
-                "grouped-portrait-images/image2",
-                "grouped-portrait-images/image3",
-                "grouped-portrait-images/image4",
-                "wall-landscape-image/image",
-                "wall-portrait-image/image"
-            };
-
-            string folder = packet.ImageKey.Substring(0, packet.ImageKey.LastIndexOf('/'));
-            bool validFolder = false;
-            foreach (var f in validFolders)
-                if (folder == f) { validFolder = true; break; }
-
-            if (!validFolder)
-            {
-                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected unknown folder from {player.PlayerName}: {packet.ImageKey}");
-                return;
-            }
-
-            // Sanitise: PNG header check (first 8 bytes)
             if (packet.ImageData == null || packet.ImageData.Length < 8 ||
                 packet.ImageData[0] != 0x89 || packet.ImageData[1] != 0x50 ||
                 packet.ImageData[2] != 0x4E || packet.ImageData[3] != 0x47)
@@ -169,7 +174,6 @@ namespace DeskPictureFrame
                 return;
             }
 
-            // Sanitise: size limit
             if (packet.ImageData.Length > 1_000_000)
             {
                 serverApi.Logger.Warning($"[DeskPictureFrame] Rejected oversized image from {player.PlayerName}: {packet.ImageKey}");
@@ -192,6 +196,12 @@ namespace DeskPictureFrame
         // SERVER: Handle request from a client for another player's image
         private void OnServerReceiveRequest(IServerPlayer requestingPlayer, ImageRequestPacket packet)
         {
+            if (!IsValidUid(packet.OwnerUid))
+            {
+                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected invalid owner UID request from {requestingPlayer.PlayerName}");
+                return;
+            }
+
             int imageCount = 0;
 
             if (serverImageCache.TryGetValue(packet.OwnerUid, out var images))
@@ -218,7 +228,18 @@ namespace DeskPictureFrame
         // CLIENT: Receive another player's image and write to disk
         private void OnClientReceiveImage(ImageResponsePacket packet)
         {
-            // Validate PNG header before accepting
+            if (!IsValidUid(packet.OwnerUid))
+            {
+                clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected invalid owner UID in response.");
+                return;
+            }
+
+            if (!IsValidImageKey(packet.ImageKey))
+            {
+                clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected invalid image key: {packet.ImageKey}");
+                return;
+            }
+
             if (packet.ImageData == null || packet.ImageData.Length < 8 ||
                 packet.ImageData[0] != 0x89 || packet.ImageData[1] != 0x50 ||
                 packet.ImageData[2] != 0x4E || packet.ImageData[3] != 0x47)
@@ -227,10 +248,9 @@ namespace DeskPictureFrame
                 return;
             }
 
-            // Also validate the image key
-            if (packet.ImageKey == null || packet.ImageKey.Contains("..") || Path.IsPathRooted(packet.ImageKey))
+            if (packet.ImageData.Length > 1_000_000)
             {
-                clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected suspicious image key: {packet.ImageKey}");
+                clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected oversized image from server: {packet.OwnerUid}/{packet.ImageKey}");
                 return;
             }
 
@@ -273,6 +293,12 @@ namespace DeskPictureFrame
         // CLIENT: Request textures for a frame owner
         public void RequestTexturesForFrame(string ownerUid, Action onReceived)
         {
+            if (!IsValidUid(ownerUid))
+            {
+                clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected invalid owner UID in texture request.");
+                return;
+            }
+
             if (receivedTextures.ContainsKey(ownerUid))
             {
                 onReceived?.Invoke();
@@ -317,6 +343,8 @@ namespace DeskPictureFrame
         // DISK: Save image to ModData cache
         private void SaveImageToDisk(string playerUid, string imageKey, byte[] data)
         {
+            if (!IsValidUid(playerUid) || !IsValidImageKey(imageKey)) return;
+
             try
             {
                 string playerFolder = Path.Combine(cacheFolder, playerUid);
@@ -338,11 +366,15 @@ namespace DeskPictureFrame
             foreach (string playerFolder in Directory.GetDirectories(cacheFolder))
             {
                 string playerUid = Path.GetFileName(playerFolder);
+                if (!IsValidUid(playerUid)) continue;
+
                 var playerImages = new ConcurrentDictionary<string, byte[]>();
 
                 foreach (string file in Directory.GetFiles(playerFolder, "*.png"))
                 {
                     string imageKey = Path.GetFileNameWithoutExtension(file).Replace("_", "/");
+                    if (!IsValidImageKey(imageKey)) continue;
+
                     playerImages[imageKey] = File.ReadAllBytes(file);
                 }
 
