@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using Vintagestory.API.Client;
@@ -11,26 +12,23 @@ namespace DeskPictureFrame
     public class DeskPictureFrameNetworkManager
     {
         private const string ChannelName = "deskpictureframe";
+        private const int MaxImagesPerPlayer = 80;
 
         // Server side
         private IServerNetworkChannel serverChannel;
-        private Dictionary<string, Dictionary<string, byte[]>> serverImageCache = new();
+        private ConcurrentDictionary<string, ConcurrentDictionary<string, byte[]>> serverImageCache = new();
         private string cacheFolder;
         private ICoreServerAPI serverApi;
 
         // Client side
         private IClientNetworkChannel clientChannel;
         private ICoreClientAPI clientApi;
-        private Dictionary<string, Dictionary<string, byte[]>> receivedTextures = new();
-        private HashSet<string> pendingRequests = new();
+        private ConcurrentDictionary<string, ConcurrentDictionary<string, byte[]>> receivedTextures = new();
+        private ConcurrentDictionary<string, byte> pendingRequests = new();
+        private readonly object callbackLock = new();
         private Dictionary<string, List<Action>> pendingCallbacks = new();
 
-        public static DeskPictureFrameNetworkManager Instance { get; private set; }
-
-        public DeskPictureFrameNetworkManager()
-        {
-            Instance = this;
-        }
+        public static DeskPictureFrameNetworkManager Instance { get; set; }
 
         public void InitServer(ICoreServerAPI sapi)
         {
@@ -43,6 +41,7 @@ namespace DeskPictureFrame
                 .RegisterMessageType<ImageUploadPacket>()
                 .RegisterMessageType<ImageRequestPacket>()
                 .RegisterMessageType<ImageResponsePacket>()
+                .RegisterMessageType<ImageTransferCompletePacket>()
                 .SetMessageHandler<ImageUploadPacket>(OnServerReceiveUpload)
                 .SetMessageHandler<ImageRequestPacket>(OnServerReceiveRequest);
             serverApi = sapi;
@@ -58,7 +57,9 @@ namespace DeskPictureFrame
                 .RegisterMessageType<ImageUploadPacket>()
                 .RegisterMessageType<ImageRequestPacket>()
                 .RegisterMessageType<ImageResponsePacket>()
-                .SetMessageHandler<ImageResponsePacket>(OnClientReceiveImage);
+                .RegisterMessageType<ImageTransferCompletePacket>()
+                .SetMessageHandler<ImageResponsePacket>(OnClientReceiveImage)
+                .SetMessageHandler<ImageTransferCompletePacket>(OnClientTransferComplete);
 
             capi.Event.PlayerEntitySpawn += (p) =>
             {
@@ -95,7 +96,6 @@ namespace DeskPictureFrame
 
                     clientChannel.SendPacket(new ImageUploadPacket
                     {
-                        PlayerUid = capi.World.Player.PlayerUID,
                         ImageKey = relative,
                         ImageData = data
                     });
@@ -112,6 +112,8 @@ namespace DeskPictureFrame
         // SERVER: Receive and cache uploaded image
         private void OnServerReceiveUpload(IServerPlayer player, ImageUploadPacket packet)
         {
+            string playerUid = player.PlayerUID;
+
             // Sanitise: no path traversal
             if (packet.ImageKey == null || packet.ImageKey.Contains("..") || Path.IsPathRooted(packet.ImageKey))
             {
@@ -129,23 +131,23 @@ namespace DeskPictureFrame
 
             // Sanitise: must be a valid known folder path
             string[] validFolders = {
-        "desk-landscape-images/image1",
-        "desk-landscape-images/image2",
-        "desk-landscape-single-images/image1",
-        "desk-portrait-images/image1",
-        "desk-portrait-images/image2",
-        "desk-portrait-images/image3",
-        "desk-portrait-single-images/image1",
-        "grouped-landscape-images/image1",
-        "grouped-landscape-images/image2",
-        "grouped-landscape-images/image3",
-        "grouped-portrait-images/image1",
-        "grouped-portrait-images/image2",
-        "grouped-portrait-images/image3",
-        "grouped-portrait-images/image4",
-        "wall-landscape-image/image",
-        "wall-portrait-image/image"
-    };
+                "desk-landscape-images/image1",
+                "desk-landscape-images/image2",
+                "desk-landscape-single-images/image1",
+                "desk-portrait-images/image1",
+                "desk-portrait-images/image2",
+                "desk-portrait-images/image3",
+                "desk-portrait-single-images/image1",
+                "grouped-landscape-images/image1",
+                "grouped-landscape-images/image2",
+                "grouped-landscape-images/image3",
+                "grouped-portrait-images/image1",
+                "grouped-portrait-images/image2",
+                "grouped-portrait-images/image3",
+                "grouped-portrait-images/image4",
+                "wall-landscape-image/image",
+                "wall-portrait-image/image"
+            };
 
             string folder = packet.ImageKey.Substring(0, packet.ImageKey.LastIndexOf('/'));
             bool validFolder = false;
@@ -174,17 +176,24 @@ namespace DeskPictureFrame
                 return;
             }
 
-            // Sanitise: max 80 images per player
-            if (!serverImageCache.ContainsKey(packet.PlayerUid))
-                serverImageCache[packet.PlayerUid] = new Dictionary<string, byte[]>();
+            // Enforce max images per player
+            var playerImages = serverImageCache.GetOrAdd(playerUid, _ => new ConcurrentDictionary<string, byte[]>());
 
-            serverImageCache[packet.PlayerUid][packet.ImageKey] = packet.ImageData;
-            SaveImageToDisk(packet.PlayerUid, packet.ImageKey, packet.ImageData);
+            if (playerImages.Count >= MaxImagesPerPlayer && !playerImages.ContainsKey(packet.ImageKey))
+            {
+                serverApi.Logger.Warning($"[DeskPictureFrame] Player {player.PlayerName} exceeded {MaxImagesPerPlayer} image limit.");
+                return;
+            }
+
+            playerImages[packet.ImageKey] = packet.ImageData;
+            SaveImageToDisk(playerUid, packet.ImageKey, packet.ImageData);
         }
 
         // SERVER: Handle request from a client for another player's image
         private void OnServerReceiveRequest(IServerPlayer requestingPlayer, ImageRequestPacket packet)
         {
+            int imageCount = 0;
+
             if (serverImageCache.TryGetValue(packet.OwnerUid, out var images))
             {
                 foreach (var kvp in images)
@@ -195,9 +204,15 @@ namespace DeskPictureFrame
                         ImageKey = kvp.Key,
                         ImageData = kvp.Value
                     }, requestingPlayer);
+                    imageCount++;
                 }
             }
 
+            serverChannel.SendPacket(new ImageTransferCompletePacket
+            {
+                OwnerUid = packet.OwnerUid,
+                ImageCount = imageCount
+            }, requestingPlayer);
         }
 
         // CLIENT: Receive another player's image and write to disk
@@ -219,27 +234,31 @@ namespace DeskPictureFrame
                 return;
             }
 
-            if (!receivedTextures.ContainsKey(packet.OwnerUid))
-                receivedTextures[packet.OwnerUid] = new Dictionary<string, byte[]>();
+            var playerTextures = receivedTextures.GetOrAdd(packet.OwnerUid, _ => new ConcurrentDictionary<string, byte[]>());
+            playerTextures[packet.ImageKey] = packet.ImageData;
 
-            receivedTextures[packet.OwnerUid][packet.ImageKey] = packet.ImageData;
-            pendingRequests.Remove(packet.OwnerUid);
+            // Write to ModData
+            try
+            {
+                string remoteFolder = Path.Combine(GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers", packet.OwnerUid, "textures");
+                string filePath = Path.Combine(remoteFolder, packet.ImageKey + ".png");
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                File.WriteAllBytes(filePath, packet.ImageData);
+                clientApi?.Logger.Notification($"[DeskPictureFrame] Cached remote image: {packet.OwnerUid}/{packet.ImageKey}");
+            }
+            catch (Exception ex)
+            {
+                clientApi?.Logger.Error($"[DeskPictureFrame] Failed to write remote image: {ex.Message}");
+            }
+        }
 
-                // Write to ModData
-                try
-                {
-                    string remoteFolder = Path.Combine(GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers", packet.OwnerUid, "textures");
-                    string filePath = Path.Combine(remoteFolder, packet.ImageKey + ".png");
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                    File.WriteAllBytes(filePath, packet.ImageData);
-                    clientApi?.Logger.Notification($"[DeskPictureFrame] Cached remote image: {packet.OwnerUid}/{packet.ImageKey}");
-                }
-                catch (Exception ex)
-                {
-                    clientApi?.Logger.Error($"[DeskPictureFrame] Failed to write remote image: {ex.Message}");
-                }
+        // CLIENT: Handle transfer-complete sentinel from server
+        private void OnClientTransferComplete(ImageTransferCompletePacket packet)
+        {
+            pendingRequests.TryRemove(packet.OwnerUid, out _);
 
-                // Fire any waiting callbacks
+            lock (callbackLock)
+            {
                 if (pendingCallbacks.TryGetValue(packet.OwnerUid, out var callbacks))
                 {
                     foreach (var cb in callbacks)
@@ -247,8 +266,11 @@ namespace DeskPictureFrame
                     pendingCallbacks.Remove(packet.OwnerUid);
                 }
             }
-        // CLIENT: Request textures for a frame owner
 
+            clientApi?.Logger.Notification($"[DeskPictureFrame] Transfer complete for {packet.OwnerUid}: {packet.ImageCount} images.");
+        }
+
+        // CLIENT: Request textures for a frame owner
         public void RequestTexturesForFrame(string ownerUid, Action onReceived)
         {
             if (receivedTextures.ContainsKey(ownerUid))
@@ -265,16 +287,18 @@ namespace DeskPictureFrame
                 return;
             }
 
-            // Store callback to fire when images arrive
-            if (!pendingCallbacks.ContainsKey(ownerUid))
-                pendingCallbacks[ownerUid] = new List<Action>();
-
+            // Store callback to fire when transfer completes
             if (onReceived != null)
-                pendingCallbacks[ownerUid].Add(onReceived);
+            {
+                lock (callbackLock)
+                {
+                    if (!pendingCallbacks.ContainsKey(ownerUid))
+                        pendingCallbacks[ownerUid] = new List<Action>();
+                    pendingCallbacks[ownerUid].Add(onReceived);
+                }
+            }
 
-            if (pendingRequests.Contains(ownerUid)) return;
-
-            pendingRequests.Add(ownerUid);
+            if (!pendingRequests.TryAdd(ownerUid, 0)) return;
 
             clientChannel?.SendPacket(new ImageRequestPacket
             {
@@ -302,7 +326,7 @@ namespace DeskPictureFrame
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[DeskPictureFrame] Failed to save image to disk: {ex.Message}");
+                serverApi?.Logger.Error($"[DeskPictureFrame] Failed to save image to disk: {ex.Message}");
             }
         }
 
@@ -314,14 +338,15 @@ namespace DeskPictureFrame
             foreach (string playerFolder in Directory.GetDirectories(cacheFolder))
             {
                 string playerUid = Path.GetFileName(playerFolder);
-                serverImageCache[playerUid] = new Dictionary<string, byte[]>();
+                var playerImages = new ConcurrentDictionary<string, byte[]>();
 
                 foreach (string file in Directory.GetFiles(playerFolder, "*.png"))
                 {
                     string imageKey = Path.GetFileNameWithoutExtension(file).Replace("_", "/");
-                    serverImageCache[playerUid][imageKey] = File.ReadAllBytes(file);
+                    playerImages[imageKey] = File.ReadAllBytes(file);
                 }
 
+                serverImageCache[playerUid] = playerImages;
                 sapi.Logger.Notification($"[DeskPictureFrame] Loaded cached images for player: {playerUid}");
             }
         }

@@ -71,8 +71,11 @@ namespace DeskPictureFrame
                         continue;
                 }
 
-                ItemStack stack = new ItemStack(world.GetBlock(frameCode));
-                if (stack?.Block != null)
+                Block frameBlock = world.GetBlock(frameCode);
+                if (frameBlock == null) continue;
+
+                ItemStack stack = new ItemStack(frameBlock);
+                if (stack.Block != null)
                 {
                     stack.Attributes.GetOrAddTreeAttribute("types").SetString("metal", metal);
                     drops.Add(stack);
@@ -83,6 +86,12 @@ namespace DeskPictureFrame
         }
         public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
         {
+            if (!Code.Path.StartsWith("deskframebox-"))
+            {
+                base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
+                return;
+            }
+
             if (world.Side == EnumAppSide.Server)
             {
                 ItemStack[] drops = GetDrops(world, pos, byPlayer, dropQuantityMultiplier);
@@ -92,7 +101,6 @@ namespace DeskPictureFrame
                     {
                         if (!byPlayer.InventoryManager.TryGiveItemstack(drop))
                         {
-                            // Inventory full, drop on ground instead
                             world.SpawnItemEntity(drop, pos.ToVec3d().Add(0.5, 0.5, 0.5));
                         }
                     }
@@ -102,6 +110,5 @@ namespace DeskPictureFrame
         }
     }
 }
-    
 
 
