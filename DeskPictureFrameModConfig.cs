@@ -18,8 +18,8 @@ namespace DeskPictureFrame
                 if (Current == null)
                 {
                     Current = new DeskPictureFrameModConfig();
-                    api.StoreModConfig(Current, "deskpictureframeconfig.json");
                 }
+                api.StoreModConfig(Current, "deskpictureframeconfig.json");
             }
             catch (Exception e)
             {

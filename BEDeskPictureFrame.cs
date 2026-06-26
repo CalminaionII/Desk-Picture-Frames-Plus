@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -13,7 +13,9 @@ namespace DeskPictureFrame
         public float MeshAngleRad = 0f;
         public string OwnerUid = null;
         internal MeshData blockMesh;
-        private static HashSet<string> registeredOrigins = new HashSet<string>();
+        private bool remoteTexturesRequested = false;
+        private bool remoteTexturesReady = false;
+        private static ConcurrentDictionary<string, byte> registeredOrigins = new();
 
         public void InitializeWithAngle()
         {
@@ -22,12 +24,22 @@ namespace DeskPictureFrame
                 MarkDirty(true);
         }
 
+        public override void Initialize(ICoreAPI api)
+        {
+            base.Initialize(api);
+
+            if (api.Side == EnumAppSide.Client)
+                CheckRemoteTextures(api as ICoreClientAPI);
+        }
+
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor world)
         {
             base.FromTreeAttributes(tree, world);
             MeshAngleRad = tree.GetFloat("meshAngleRad", 0f);
             OwnerUid = tree.GetString("ownerUid", null);
             blockMesh = null;
+            remoteTexturesReady = false;
+            remoteTexturesRequested = false;
         }
 
         public override void ToTreeAttributes(ITreeAttribute tree)
@@ -36,6 +48,44 @@ namespace DeskPictureFrame
             tree.SetFloat("meshAngleRad", MeshAngleRad);
             if (OwnerUid != null)
                 tree.SetString("ownerUid", OwnerUid);
+        }
+
+        private void CheckRemoteTextures(ICoreClientAPI capi)
+        {
+            if (capi == null) return;
+            if (OwnerUid == null || capi.World.Player == null) return;
+            if (OwnerUid == capi.World.Player.PlayerUID) return;
+
+            string remoteTexturesFolder = DeskPictureFrameConstants.RemotePlayerTexturesFolder(OwnerUid);
+
+            if (Directory.Exists(remoteTexturesFolder))
+            {
+                RegisterRemoteOrigin(capi, OwnerUid);
+                remoteTexturesReady = true;
+                return;
+            }
+
+            if (!remoteTexturesRequested)
+            {
+                remoteTexturesRequested = true;
+                DeskPictureFrameNetworkManager.Instance?.RequestTexturesForFrame(OwnerUid, () =>
+                {
+                    RegisterRemoteOrigin(capi, OwnerUid);
+                    remoteTexturesReady = true;
+                    blockMesh = null;
+                    MarkDirty(true);
+                });
+            }
+        }
+
+        private static void RegisterRemoteOrigin(ICoreClientAPI capi, string ownerUid)
+        {
+            if (registeredOrigins.TryAdd(ownerUid, 0))
+            {
+                string remotePlayerRoot = DeskPictureFrameConstants.RemotePlayerFolder(ownerUid);
+                capi.Assets.AddModOrigin(DeskPictureFrameConstants.ModId, remotePlayerRoot);
+                capi.Logger.Notification($"[DeskPictureFrame] Registered remote origin for: {ownerUid}");
+            }
         }
 
         public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
@@ -49,36 +99,13 @@ namespace DeskPictureFrame
         {
             if (capi == null) return;
 
-            bool isRemoteOwner = OwnerUid != null && OwnerUid != capi.World.Player.PlayerUID;
+            bool isRemoteOwner = OwnerUid != null
+                && capi.World.Player != null
+                && OwnerUid != capi.World.Player.PlayerUID;
 
-            if (isRemoteOwner)
+            if (isRemoteOwner && !remoteTexturesReady)
             {
-                string remoteTexturesFolder = DeskPictureFrameConstants.RemotePlayerTexturesFolder(OwnerUid);
-
-                bool hasTextures = Directory.Exists(remoteTexturesFolder);
-
-                if (!hasTextures)
-                {
-                    // Don't have textures yet, request them and use placeholder for now
-                    DeskPictureFrameNetworkManager.Instance?.RequestTexturesForFrame(OwnerUid, () =>
-                    {
-                        blockMesh = null;
-                        MarkDirty(true);
-                    });
-
-                    // Tessellate with own textures as placeholder
-                    BuildMesh(capi);
-                    return;
-                }
-
-                // Have the remote textures, register their folder as an asset origin if not already done
-                if (!registeredOrigins.Contains(OwnerUid))
-                {
-                    string remotePlayerRoot = DeskPictureFrameConstants.RemotePlayerFolder(OwnerUid);
-                    capi.Assets.AddModOrigin(DeskPictureFrameConstants.ModId, remotePlayerRoot);
-                    registeredOrigins.Add(OwnerUid);
-                    capi.Logger.Notification($"[DeskPictureFrame] Registered remote origin for: {OwnerUid}");
-                }
+                CheckRemoteTextures(capi);
             }
 
             BuildMesh(capi);

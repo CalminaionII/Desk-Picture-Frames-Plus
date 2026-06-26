@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using Vintagestory.API.Client;
@@ -30,12 +30,6 @@ namespace DeskPictureFrame
                 PopulateDefaults(api, configFolder);
                 api.Logger.Notification($"[DeskPictureFrame] Custom images folder ready: {configFolder}");
             }
-        }
-        public override void Start(ICoreAPI api)
-        {
-            base.Start(api);
-            api.RegisterBlockClass("BlockDeskPictureFrame", typeof(BlockDeskPictureFrame));
-            api.RegisterBlockEntityClass("BEDeskPictureFrame", typeof(BEDeskPictureFrame));
         }
 
         private void CreateFolderStructure(ICoreAPI api, string configFolder)
@@ -93,9 +87,21 @@ namespace DeskPictureFrame
 
         private DeskPictureFrameNetworkManager networkManager;
 
+        public override void Start(ICoreAPI api)
+        {
+            base.Start(api);
+            api.RegisterBlockClass("BlockDeskPictureFrame", typeof(BlockDeskPictureFrame));
+            api.RegisterBlockEntityClass("BEDeskPictureFrame", typeof(BEDeskPictureFrame));
+
+            if (networkManager == null)
+            {
+                networkManager = new DeskPictureFrameNetworkManager();
+                DeskPictureFrameNetworkManager.Instance = networkManager;
+            }
+        }
+
         public override void StartServerSide(ICoreServerAPI api)
         {
-            networkManager = new DeskPictureFrameNetworkManager();
             networkManager.InitServer(api);
         }
 
@@ -106,7 +112,6 @@ namespace DeskPictureFrame
             api.Assets.AddModOrigin(DeskPictureFrameConstants.ModId, remotePlayersFolder);
             api.Logger.Notification($"[DeskPictureFrame] Remote players cache folder ready: {remotePlayersFolder}");
 
-            networkManager = new DeskPictureFrameNetworkManager();
             networkManager.InitClient(api);
         }
     }
