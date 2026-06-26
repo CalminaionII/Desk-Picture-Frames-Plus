@@ -89,20 +89,28 @@ namespace DeskPictureFrame
 
         private void BuildMesh(ICoreClientAPI capi)
         {
-            var arlBlockBehavior = Block?.GetBehavior<AttributeRenderingLibrary.BlockBehaviorShapeTexturesFromAttributes>();
-            var arlBeBehavior = this.GetBehavior<AttributeRenderingLibrary.BlockEntityBehaviorShapeTexturesFromAttributes>();
-
-            if (arlBlockBehavior != null && arlBeBehavior != null)
+            try
             {
-                blockMesh = arlBlockBehavior.GetOrCreateMesh(arlBeBehavior.Variants, Block.Shape, Pos, Block.Code.Path, null).Clone();
-            }
-            else
-            {
-                capi.Tesselator.TesselateBlock(Block, out blockMesh);
-            }
+                var arlBlockBehavior = Block?.GetBehavior<AttributeRenderingLibrary.BlockBehaviorShapeTexturesFromAttributes>();
+                var arlBeBehavior = this.GetBehavior<AttributeRenderingLibrary.BlockEntityBehaviorShapeTexturesFromAttributes>();
 
-            if (blockMesh != null && MeshAngleRad != 0f)
-                blockMesh = blockMesh.Rotate(new Vec3f(0.5f, 0.0f, 0.5f), 0f, MeshAngleRad, 0f);
+                if (arlBlockBehavior != null && arlBeBehavior != null)
+                {
+                    blockMesh = arlBlockBehavior.GetOrCreateMesh(arlBeBehavior.Variants, Block.Shape, Pos, Block.Code.Path, null).Clone();
+                }
+                else
+                {
+                    capi.Tesselator.TesselateBlock(Block, out blockMesh);
+                }
+
+                if (blockMesh != null && MeshAngleRad != 0f)
+                    blockMesh = blockMesh.Rotate(new Vec3f(0.5f, 0.0f, 0.5f), 0f, MeshAngleRad, 0f);
+            }
+            catch (System.Exception ex)
+            {
+                capi.Logger.Error($"[DeskPictureFrame] Failed to build mesh at {Pos}: {ex.Message}");
+                blockMesh = null;
+            }
         }
     }
 }

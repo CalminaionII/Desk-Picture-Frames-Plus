@@ -71,8 +71,15 @@ namespace DeskPictureFrame
                         continue;
                 }
 
-                ItemStack stack = new ItemStack(world.GetBlock(frameCode));
-                if (stack?.Block != null)
+                Block resolvedBlock = world.GetBlock(frameCode);
+                if (resolvedBlock == null)
+                {
+                    world.Logger.Warning($"[DeskPictureFrame] Could not resolve block for drop: {frameCode}");
+                    continue;
+                }
+
+                ItemStack stack = new ItemStack(resolvedBlock);
+                if (stack.Block != null)
                 {
                     stack.Attributes.GetOrAddTreeAttribute("types").SetString("metal", metal);
                     drops.Add(stack);

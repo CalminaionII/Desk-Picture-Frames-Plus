@@ -27,7 +27,15 @@ namespace DeskPictureFrame
             if (api.Side == EnumAppSide.Client)
             {
                 configFolder = Path.Combine(GamePaths.ModConfig, "deskpictureframe");
-                Directory.CreateDirectory(configFolder);
+                try
+                {
+                    Directory.CreateDirectory(configFolder);
+                }
+                catch (Exception ex)
+                {
+                    api.Logger.Error($"[DeskPictureFrame] Failed to create config folder {configFolder}: {ex.Message}");
+                    return;
+                }
                 api.Assets.AddModOrigin("deskpictureframe", configFolder);
                 CreateFolderStructure(api);
                 PopulateDefaults(api);
@@ -68,8 +76,15 @@ namespace DeskPictureFrame
                 string fullPath = Path.Combine(configFolder, relFolder);
                 if (!Directory.Exists(fullPath))
                 {
-                    Directory.CreateDirectory(fullPath);
-                    api.Logger.Notification($"[DeskPictureFrame] Created folder: {relFolder}");
+                    try
+                    {
+                        Directory.CreateDirectory(fullPath);
+                        api.Logger.Notification($"[DeskPictureFrame] Created folder: {relFolder}");
+                    }
+                    catch (Exception ex)
+                    {
+                        api.Logger.Error($"[DeskPictureFrame] Failed to create folder {relFolder}: {ex.Message}");
+                    }
                 }
             }
         }
@@ -115,7 +130,11 @@ namespace DeskPictureFrame
                     try
                     {
                         using var stream = assembly.GetManifestResourceStream(resourceName);
-                        if (stream == null) continue;
+                        if (stream == null)
+                        {
+                            api.Logger.Debug($"[DeskPictureFrame] Embedded resource not found: {resourceName}");
+                            continue;
+                        }
 
                         using var fileStream = File.Create(destFile);
                         stream.CopyTo(fileStream);
@@ -145,7 +164,15 @@ namespace DeskPictureFrame
         public override void StartClientSide(ICoreClientAPI api)
         {
             string remotePlayersFolder = Path.Combine(GamePaths.DataPath, "ModData", "deskpictureframe", "remoteplayers");
-            Directory.CreateDirectory(remotePlayersFolder);
+            try
+            {
+                Directory.CreateDirectory(remotePlayersFolder);
+            }
+            catch (Exception ex)
+            {
+                api.Logger.Error($"[DeskPictureFrame] Failed to create remote players folder {remotePlayersFolder}: {ex.Message}");
+                return;
+            }
             api.Assets.AddModOrigin("deskpictureframe", remotePlayersFolder);
             api.Logger.Notification($"[DeskPictureFrame] Remote players cache folder ready: {remotePlayersFolder}");
 
