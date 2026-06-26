@@ -45,31 +45,17 @@ namespace DeskPictureFrame
             if (arlBehavior?.Variants != null)
                 metal = arlBehavior.Variants.Get("metal") ?? "brass";
 
-            string collection = Code.Path.Replace("deskframebox-", "");
+            string collection = DeskPictureFrameValidation.ParseBoxCollection(Code.Path);
 
             List<ItemStack> drops = new List<ItemStack>();
 
             for (int i = 1; i <= 5; i++)
             {
-                AssetLocation frameCode;
+                string assetCode = DeskPictureFrameValidation.GetFrameAssetCode(collection, i);
+                if (assetCode == null)
+                    continue;
 
-                switch (collection)
-                {
-                    case "portraitsingle":
-                        frameCode = new AssetLocation($"deskpictureframe:deskportraitsingle-{i}");
-                        break;
-                    case "landscapesingle":
-                        frameCode = new AssetLocation($"deskpictureframe:desklandscapesingle-{i}");
-                        break;
-                    case "portraitwall":
-                        frameCode = new AssetLocation($"deskpictureframe:wall-portrait-{i}-north");
-                        break;
-                    case "landscapewall":
-                        frameCode = new AssetLocation($"deskpictureframe:wall-landscape-{i}-north");
-                        break;
-                    default:
-                        continue;
-                }
+                AssetLocation frameCode = new AssetLocation(assetCode);
 
                 Block frameBlock = world.GetBlock(frameCode);
                 if (frameBlock == null) continue;

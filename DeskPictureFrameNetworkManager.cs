@@ -114,65 +114,10 @@ namespace DeskPictureFrame
         {
             string playerUid = player.PlayerUID;
 
-            // Sanitise: no path traversal
-            if (packet.ImageKey == null || packet.ImageKey.Contains("..") || Path.IsPathRooted(packet.ImageKey))
+            string rejection = DeskPictureFrameValidation.ValidateUploadPacket(packet.ImageKey, packet.ImageData);
+            if (rejection != null)
             {
-                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected suspicious image key from {player.PlayerName}: {packet.ImageKey}");
-                return;
-            }
-
-            // Sanitise: must end in /1 through /5
-            string fileName = Path.GetFileName(packet.ImageKey);
-            if (!System.Text.RegularExpressions.Regex.IsMatch(fileName, @"^[1-5]$"))
-            {
-                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected invalid image name from {player.PlayerName}: {packet.ImageKey}");
-                return;
-            }
-
-            // Sanitise: must be a valid known folder path
-            string[] validFolders = {
-                "desk-landscape-images/image1",
-                "desk-landscape-images/image2",
-                "desk-landscape-single-images/image1",
-                "desk-portrait-images/image1",
-                "desk-portrait-images/image2",
-                "desk-portrait-images/image3",
-                "desk-portrait-single-images/image1",
-                "grouped-landscape-images/image1",
-                "grouped-landscape-images/image2",
-                "grouped-landscape-images/image3",
-                "grouped-portrait-images/image1",
-                "grouped-portrait-images/image2",
-                "grouped-portrait-images/image3",
-                "grouped-portrait-images/image4",
-                "wall-landscape-image/image",
-                "wall-portrait-image/image"
-            };
-
-            string folder = packet.ImageKey.Substring(0, packet.ImageKey.LastIndexOf('/'));
-            bool validFolder = false;
-            foreach (var f in validFolders)
-                if (folder == f) { validFolder = true; break; }
-
-            if (!validFolder)
-            {
-                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected unknown folder from {player.PlayerName}: {packet.ImageKey}");
-                return;
-            }
-
-            // Sanitise: PNG header check (first 8 bytes)
-            if (packet.ImageData == null || packet.ImageData.Length < 8 ||
-                packet.ImageData[0] != 0x89 || packet.ImageData[1] != 0x50 ||
-                packet.ImageData[2] != 0x4E || packet.ImageData[3] != 0x47)
-            {
-                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected non-PNG data from {player.PlayerName}: {packet.ImageKey}");
-                return;
-            }
-
-            // Sanitise: size limit
-            if (packet.ImageData.Length > 1_000_000)
-            {
-                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected oversized image from {player.PlayerName}: {packet.ImageKey}");
+                serverApi.Logger.Warning($"[DeskPictureFrame] Rejected upload from {player.PlayerName}: {rejection} ({packet.ImageKey})");
                 return;
             }
 
@@ -218,17 +163,13 @@ namespace DeskPictureFrame
         // CLIENT: Receive another player's image and write to disk
         private void OnClientReceiveImage(ImageResponsePacket packet)
         {
-            // Validate PNG header before accepting
-            if (packet.ImageData == null || packet.ImageData.Length < 8 ||
-                packet.ImageData[0] != 0x89 || packet.ImageData[1] != 0x50 ||
-                packet.ImageData[2] != 0x4E || packet.ImageData[3] != 0x47)
+            if (!DeskPictureFrameValidation.HasValidPngHeader(packet.ImageData))
             {
                 clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected invalid image data for: {packet.OwnerUid}/{packet.ImageKey}");
                 return;
             }
 
-            // Also validate the image key
-            if (packet.ImageKey == null || packet.ImageKey.Contains("..") || Path.IsPathRooted(packet.ImageKey))
+            if (!DeskPictureFrameValidation.IsImageKeyPathSafe(packet.ImageKey))
             {
                 clientApi?.Logger.Warning($"[DeskPictureFrame] Rejected suspicious image key: {packet.ImageKey}");
                 return;
