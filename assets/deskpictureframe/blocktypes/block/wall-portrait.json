@@ -1,0 +1,461 @@
+{
+    "code": "frame-wall-portrait",
+    "class": "BlockDeskPictureFrame",
+    "entityClass": "BEDeskPictureFrame",
+    "behaviors": [
+        {
+            "name": "AttributeRenderingLibrary.HorizontalAttachable"
+        },
+        {
+            "name": "RightClickPickup"
+        },
+        {
+            "name": "AttributeRenderingLibrary.BlockShapeTexturesFromAttributes",
+            "properties": {
+                "textures": {
+                    "img-*": {
+                        "material": {
+                            "base": "game:item/resource/plate/{metal}"
+                        },
+                        "image": {
+                            "base": "deskpictureframe:img/{img}"
+                        }
+                    },
+                    "*": {
+                        "material": {
+                            "base": "game:item/resource/plate/{metal}"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "textures": {
+        "image": {
+            "base": "deskpictureframe:img/placeholder"
+        },
+        "coal": {
+            "base": "game:block/coal/charcoal"
+        }
+    },
+    "entityBehaviors": [
+        {
+            "name": "AttributeRenderingLibrary.ShapeTexturesFromAttributes"
+        }
+    ],
+    "attributes": {
+        "legacyImageFolders": {
+            "image": "wall-portrait-image/image"
+        },
+        "handbook": {
+            "groupBy": [
+                "frame-wall-portrait-*"
+            ]
+        },
+        "groundstorable": true,
+        "displaycaseable": true,
+        "shelvable": true,
+        "moldrackable": true,
+        "groundStorageTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 0.75
+            }
+        },
+        "onDisplayTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 1
+            }
+        },
+        "onshelfTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 0.85
+            }
+        },
+        "onWindowStorageTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 1.08
+            }
+        },
+        "displayable": {
+            "windowdisplay": {
+                "sizeByType": {
+                    "*-1-north": {
+                        "width": 6,
+                        "height": 8.24,
+                        "length": 1
+                    },
+                    "*": {
+                        "width": 6,
+                        "height": 8.24,
+                        "length": 1
+                    }
+                },
+                "transformByType": {
+                    "*-1-north": {
+                        "translation": {
+                            "x": 0,
+                            "y": -0.0355,
+                            "z": 0.25
+                        },
+                        "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "origin": {
+                            "x": 0.5,
+                            "y": 0,
+                            "z": 0.5
+                        },
+                        "scale": 0.56
+                    },
+                    "*": {
+                        "translation": {
+                            "x": 0,
+                            "y": -0.0355,
+                            "z": 0.25
+                        },
+                        "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "origin": {
+                            "x": 0.5,
+                            "y": 0,
+                            "z": 0.5
+                        },
+                        "scale": 0.56
+                    }
+                }
+            },
+            "shelf": {
+                "sizeByType": {
+                    "*": {
+                        "width": 4,
+                        "height": 4.7,
+                        "length": 3
+                    }
+                },
+                "transformByType": {
+                    "*": {
+                        "translation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "origin": {
+                            "x": 0.5,
+                            "y": 0,
+                            "z": 0.5
+                        },
+                        "scale": 0.85
+                    }
+                }
+            }
+        },
+        "slotOrientation": {
+            "image": "portrait"
+        }
+    },
+    "variantgroups": [
+        {
+            "code": "image",
+            "loadFromProperties": "block/wall-portrait-variants"
+        },
+        {
+            "code": "side",
+            "loadFromProperties": "abstract/horizontalorientation"
+        }
+    ],
+    "shapeByType": {
+        "*": {
+            "base": "deskpictureframe:block/wall-portrait",
+            "rotateYByType": {
+                "*-east": 270,
+                "*-south": 180,
+                "*-west": 90,
+                "*-north": 0
+            }
+        }
+    },
+    "creativeInventoryStacksByType": {
+        "frame-wall-portrait-1-north": [
+            {
+                "tabs": [
+                    "general",
+                    "decorative",
+                    "deskpictureframe"
+                ],
+                "stacks": [
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "copper"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "brass"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "gold"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "lead"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "molybdochalkos"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "platinum"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "tin"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "uranium"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-wall-portrait-{image}-north",
+                        "attributes": {
+                            "types": {
+                                "metal": "zinc"
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "blockmaterial": "Metal",
+    "lightAbsorption": 0,
+    "faceCullMode": "NeverCull",
+    "sidesolid": {
+        "all": false
+    },
+    "sideopaque": {
+        "all": false
+    },
+    "sideao": {
+        "all": false
+    },
+    "replaceable": 5001,
+    "resistance": 0.1,
+    "collisionbox": {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 1,
+        "z2": 0.0625,
+        "rotateYByType": {
+            "*-east": 270,
+            "*-south": 180,
+            "*-west": 90,
+            "*-north": 0
+        }
+    },
+    "selectionbox": {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 1,
+        "z2": 0.0625,
+        "rotateYByType": {
+            "*-east": 270,
+            "*-south": 180,
+            "*-west": 90,
+            "*-north": 0
+        }
+    },
+    "sounds": {
+        "place": "game:block/anvil1",
+        "break": "game:block/anvil1",
+        "hit": "game:block/heavymetal-hit"
+    },
+    "rainPermeable": true,
+    "materialDensity": 600,
+    "guiTransform": {
+        "translation": {
+            "x": 8,
+            "y": 15,
+            "z": 0
+        },
+        "rotation": {
+            "x": -1,
+            "y": 145,
+            "z": 0
+        },
+        "origin": {
+            "x": 0.5,
+            "y": 0.1,
+            "z": 0.5
+        },
+        "scale": 1.5
+    },
+    "groundTransform": {
+        "translation": {
+            "x": 0,
+            "y": 0.42,
+            "z": 0
+        },
+        "rotation": {
+            "x": -90,
+            "y": 0,
+            "z": 0
+        },
+        "origin": {
+            "x": 0.5,
+            "y": 0,
+            "z": 0.5
+        },
+        "scale": 4.1
+    },
+    "tpHandTransform": {
+        "translation": {
+            "x": -0.55,
+            "y": 0.4,
+            "z": 0
+        },
+        "rotation": {
+            "x": 180,
+            "y": 0,
+            "z": 0
+        },
+        "origin": {
+            "x": 0.5,
+            "y": 0.1,
+            "z": 0.5
+        },
+        "scale": 0.9
+    },
+    "fpHandTransform": {
+        "translation": {
+            "x": 0,
+            "y": -0.05,
+            "z": 1.1
+        },
+        "rotation": {
+            "x": 0,
+            "y": -130,
+            "z": 0
+        },
+        "origin": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0
+        }
+    }
+}

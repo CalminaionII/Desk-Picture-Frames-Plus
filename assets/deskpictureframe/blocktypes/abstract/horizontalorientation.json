@@ -1,0 +1,17 @@
+{
+    "Code": "side",
+    "variants": [
+        {
+            "code": "north"
+        },
+        {
+            "code": "south"
+        },
+        {
+            "code": "east"
+        },
+        {
+            "code": "west"
+        }
+    ]
+}

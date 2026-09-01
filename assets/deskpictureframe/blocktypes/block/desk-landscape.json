@@ -1,0 +1,493 @@
+{
+    "code": "frame-desk-landscape-double",
+    "class": "BlockDeskPictureFrame",
+    "entityClass": "BEDeskPictureFrame",
+    "behaviors": [
+        {
+            "name": "RightClickPickup"
+        },
+        {
+            "name": "AttributeRenderingLibrary.BlockShapeTexturesFromAttributes",
+            "properties": {
+                "textures": {
+                    "img1-*::img2-*": {
+                        "material": {
+                            "base": "game:item/resource/plate/{metal}"
+                        },
+                        "image1": {
+                            "base": "deskpictureframe:img/{img1}"
+                        },
+                        "image2": {
+                            "base": "deskpictureframe:img/{img2}"
+                        }
+                    },
+                    "*": {
+                        "material": {
+                            "base": "game:item/resource/plate/{metal}"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "textures": {
+        "image1": {
+            "base": "deskpictureframe:img/placeholder"
+        },
+        "image2": {
+            "base": "deskpictureframe:img/placeholder"
+        },
+        "coal": {
+            "base": "game:block/coal/charcoal"
+        }
+    },
+    "entityBehaviors": [
+        {
+            "name": "RotatablePlaceable"
+        },
+        {
+            "name": "AttributeRenderingLibrary.ShapeTexturesFromAttributes"
+        }
+    ],
+    "attributes": {
+        "legacyImageFolders": {
+            "image1": "desk-landscape-images/image1",
+            "image2": "desk-landscape-images/image2"
+        },
+        "handbook": {
+            "groupBy": [
+                "frame-desk-landscape-double-1-1",
+                "frame-desk-landscape-double-2-2",
+                "frame-desk-landscape-double-3-3",
+                "frame-desk-landscape-double-4-4",
+                "frame-desk-landscape-double-5-5"
+            ]
+        },
+        "groundstorable": true,
+        "displaycaseable": true,
+        "shelvable": true,
+        "moldrackable": true,
+        "groundStorageTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 0.5
+            }
+        },
+        "onDisplayTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 0.9
+            }
+        },
+        "onshelfTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 0.6
+            }
+        },
+        "onWindowStorageTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 0.9
+            }
+        },
+        "displayable": {
+            "windowdisplay": {
+                "sizeByType": {
+                    "*-1-1": {
+                        "width": 7,
+                        "height": 3,
+                        "length": 3
+                    },
+                    "*": {
+                        "width": 7,
+                        "height": 3,
+                        "length": 3
+                    }
+                },
+                "transformByType": {
+                    "*-1-1": {
+                        "translation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "origin": {
+                            "x": 0.5,
+                            "y": 0,
+                            "z": 0.5
+                        },
+                        "scale": 0.6
+                    },
+                    "*": {
+                        "translation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "origin": {
+                            "x": 0.5,
+                            "y": 0,
+                            "z": 0.5
+                        },
+                        "scale": 0.6
+                    }
+                }
+            },
+            "shelf": {
+                "sizeByType": {
+                    "*-1-1": {
+                        "width": 7,
+                        "height": 3,
+                        "length": 3
+                    },
+                    "*": {
+                        "width": 7,
+                        "height": 3,
+                        "length": 3
+                    }
+                },
+                "transformByType": {
+                    "*-1-1": {
+                        "translation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "origin": {
+                            "x": 0.5,
+                            "y": 0,
+                            "z": 0.5
+                        },
+                        "scale": 0.6
+                    },
+                    "*": {
+                        "translation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "rotation": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                        },
+                        "origin": {
+                            "x": 0.5,
+                            "y": 0,
+                            "z": 0.5
+                        },
+                        "scale": 0.6
+                    }
+                }
+            }
+        },
+        "slotOrientation": {
+            "image1": "landscape",
+            "image2": "landscape"
+        }
+    },
+    "variantgroups": [
+        {
+            "code": "image1",
+            "loadFromProperties": "block/desk-landscape-variants-a"
+        },
+        {
+            "code": "image2",
+            "loadFromProperties": "block/desk-landscape-variants-b"
+        }
+    ],
+    "shapeByType": {
+        "frame-desk-landscape-double-*": {
+            "base": "deskpictureframe:block/desk-landscape"
+        }
+    },
+    "shapeInventoryByType": {
+        "frame-desk-landscape-double-*": {
+            "base": "deskpictureframe:block/desk-landscape-inventory"
+        }
+    },
+    "allowedVariants": [
+        "frame-desk-landscape-double-1-1",
+        "frame-desk-landscape-double-2-2",
+        "frame-desk-landscape-double-3-3",
+        "frame-desk-landscape-double-4-4",
+        "frame-desk-landscape-double-5-5"
+    ],
+    "creativeInventoryStacksByType": {
+        "frame-desk-landscape-double-1-1": [
+            {
+                "tabs": [
+                    "general",
+                    "decorative",
+                    "deskpictureframe"
+                ],
+                "stacks": [
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "copper"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "brass"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "gold"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "lead"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "molybdochalkos"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "platinum"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "tin"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "uranium"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-desk-landscape-double-{image1}-{image2}",
+                        "attributes": {
+                            "types": {
+                                "metal": "zinc"
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "blockmaterial": "Metal",
+    "lightAbsorption": 0,
+    "faceCullMode": "NeverCull",
+    "sidesolid": {
+        "all": false
+    },
+    "sideopaque": {
+        "all": false
+    },
+    "sideao": {
+        "all": false
+    },
+    "replaceable": 5001,
+    "resistance": 0.1,
+    "collisionbox": {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 0.0625,
+        "z2": 1
+    },
+    "selectionbox": {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 0.0625,
+        "z2": 1
+    },
+    "sounds": {
+        "place": "game:block/anvil1",
+        "break": "game:block/anvil1",
+        "hit": "game:block/metaldoor-place"
+    },
+    "rainPermeable": true,
+    "materialDensity": 600,
+    "heldTpIdleAnimation": "holdbothhandslarge",
+    "heldRightReadyAnimation": "heldblockready",
+    "heldTpUseAnimation": "twohandplaceblock",
+    "guiTransform": {
+        "translation": {
+            "x": -2,
+            "y": 2,
+            "z": 0
+        },
+        "rotation": {
+            "x": -55,
+            "y": -30,
+            "z": 7
+        },
+        "origin": {
+            "x": 0.5,
+            "y": 0.1,
+            "z": 0.5
+        },
+        "scale": 2.4
+    },
+    "groundTransform": {
+        "translation": {
+            "x": 0,
+            "y": 0.1,
+            "z": 0
+        },
+        "rotation": {
+            "x": -3,
+            "y": 129,
+            "z": 4
+        },
+        "origin": {
+            "x": 0.5,
+            "y": 0.1,
+            "z": 0.5
+        },
+        "scale": 4.5
+    },
+    "tpHandTransform": {
+        "translation": {
+            "x": -0.57,
+            "y": -0.1,
+            "z": -0.25
+        },
+        "rotation": {
+            "x": 0,
+            "y": 13,
+            "z": -85
+        },
+        "origin": {
+            "x": 0.5,
+            "y": 0.1,
+            "z": 0.5
+        },
+        "scale": 1.1
+    },
+    "fpHandTransform": {
+        "translation": {
+            "x": 0,
+            "y": -0.05,
+            "z": 1.1
+        },
+        "rotation": {
+            "x": 0,
+            "y": -130,
+            "z": 0
+        },
+        "origin": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0
+        }
+    }
+}

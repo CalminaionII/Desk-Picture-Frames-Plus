@@ -1,0 +1,1696 @@
+{
+    "money": {
+        "avg": 40,
+        "var": 8
+    },
+    "selling": {
+        "maxItems": 16,
+        "list": [
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "copper"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 20,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "brass"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 30,
+                    "var": 3
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "gold"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 60,
+                    "var": 6
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "lead"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "molybdochalkos"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 40,
+                    "var": 4
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "platinum"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 80,
+                    "var": 8
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "tin"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "uranium"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 80,
+                    "var": 8
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "zinc"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "copper"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 20,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "brass"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 30,
+                    "var": 3
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "gold"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 60,
+                    "var": 6
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "lead"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "molybdochalkos"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 40,
+                    "var": 4
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "platinum"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 80,
+                    "var": 8
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "tin"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "uranium"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 80,
+                    "var": 8
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-desk-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "zinc"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "copper"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 20,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "brass"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 30,
+                    "var": 3
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "gold"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 60,
+                    "var": 6
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "lead"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "molybdochalkos"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 40,
+                    "var": 4
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "platinum"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 80,
+                    "var": 8
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "tin"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "uranium"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 80,
+                    "var": 8
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-portrait",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "zinc"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "copper"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 20,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "brass"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 30,
+                    "var": 3
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "gold"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 60,
+                    "var": 6
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "lead"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "molybdochalkos"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 40,
+                    "var": 4
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "platinum"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 80,
+                    "var": 8
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "tin"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "uranium"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 80,
+                    "var": 8
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-collection-wall-landscape",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "zinc"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 24,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "birch"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "oak"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "maple"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "pine"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "acacia"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "kapok"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "baldcypress"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "larch"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "redwood"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "ebony"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "walnut"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "purpleheart"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 10,
+                    "var": 2
+                }
+            }
+        ]
+    },
+    "buying": {
+        "maxItems": 16,
+        "list": [
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "gold"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 5,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "platinum"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 7,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "uranium"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 7,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "copper"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "brass"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 3,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "lead"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "molybdochalkos"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "tin"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-landscape-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "zinc"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "gold"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 5,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "platinum"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 7,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "uranium"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 7,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "copper"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "brass"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 3,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "lead"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "molybdochalkos"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "tin"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-desk-portrait-1",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "zinc"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "gold"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 5,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "platinum"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 7,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "uranium"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 7,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "copper"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "brass"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 3,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "lead"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "molybdochalkos"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "tin"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-landscape-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "zinc"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "gold"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 5,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "platinum"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 7,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "uranium"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 7,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "copper"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "brass"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 3,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "lead"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "molybdochalkos"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "tin"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "deskpictureframe:frame-wall-portrait-1-north",
+                "type": "block",
+                "attributes": {
+                    "types": {
+                        "metal": "zinc"
+                    }
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 3,
+                    "var": 2
+                },
+                "price": {
+                    "avg": 2,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "birch"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "oak"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "maple"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "pine"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "acacia"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "kapok"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "baldcypress"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "larch"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "redwood"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "ebony"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "walnut"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            },
+            {
+                "code": "game:cabinet-topbottom",
+                "type": "block",
+                "attributes": {
+                    "wood": "purpleheart"
+                },
+                "stacksize": 1,
+                "stock": {
+                    "avg": 2,
+                    "var": 1
+                },
+                "price": {
+                    "avg": 4,
+                    "var": 1
+                }
+            }
+        ]
+    }
+}

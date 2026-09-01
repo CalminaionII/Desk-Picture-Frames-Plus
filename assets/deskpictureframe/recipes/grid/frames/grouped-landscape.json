@@ -1,0 +1,56 @@
+[
+  {
+    "ingredientPattern": "A,A,C,_,_,_,_,_,_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalplate-*",
+        "name": "metal",
+        "quantity": 1
+      },
+      "C": {
+        "type": "item",
+        "code": "game:cloth-*",
+        "name": "cloth",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "block",
+      "code": "frame-wall-landscape-1-north",
+      "quantity": 1,
+      "attributes": {
+        "types": {
+          "metal": "{metal}"
+        }
+      }
+    }
+  },
+  {
+    "ingredientPattern": "A,B,_,_,_,_,_,_,_",
+    "ingredients": {
+      "A": {
+        "type": "block",
+        "code": "deskpictureframe:frame-wall-landscape-1-north",
+        "name": "metal",
+        "quantity": 1
+      },
+      "B": {
+        "type": "block",
+        "code": "deskpictureframe:frame-desk-landscape-1",
+        "name": "metal",
+        "quantity": 2
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "copyAttributesFrom": "A",
+    "output": {
+      "type": "block",
+      "code": "frame-combo-landscape-1-1-1",
+      "quantity": 1
+    }
+  }
+]

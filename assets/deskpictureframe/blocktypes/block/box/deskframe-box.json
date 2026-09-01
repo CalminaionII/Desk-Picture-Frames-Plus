@@ -1,0 +1,369 @@
+{
+    "code": "frame-collection",
+    "class": "BlockDeskPictureFrame",
+    "entityClass": "BEDeskPictureFrame",
+    "maxStackSize": 8,
+    "variantgroups": [
+        {
+            "code": "collection",
+            "states": [
+                "desk-portrait",
+                "desk-landscape",
+                "wall-portrait",
+                "wall-landscape"
+            ]
+        }
+    ],
+    "behaviors": [
+        {
+            "name": "RightClickPickup"
+        },
+        {
+            "name": "AttributeRenderingLibrary.BlockShapeTexturesFromAttributes",
+            "properties": {
+                "textures": {
+                    "*": {
+                        "metal": {
+                            "base": "game:item/resource/plate/{metal}"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "entityBehaviors": [
+        {
+            "name": "RotatablePlaceable"
+        },
+        {
+            "name": "AttributeRenderingLibrary.ShapeTexturesFromAttributes"
+        }
+    ],
+    "allowedVariants": [
+        "frame-collection-desk-portrait",
+        "frame-collection-desk-landscape",
+        "frame-collection-wall-portrait",
+        "frame-collection-wall-landscape"
+    ],
+    "shapeByType": {
+        "frame-collection-desk-portrait": {
+            "base": "deskpictureframe:block/box/portrait-single-box"
+        },
+        "frame-collection-desk-landscape": {
+            "base": "deskpictureframe:block/box/landscape-single-box"
+        },
+        "frame-collection-wall-portrait": {
+            "base": "deskpictureframe:block/box/portrait-wall-box"
+        },
+        "frame-collection-wall-landscape": {
+            "base": "deskpictureframe:block/box/landscape-wall-box"
+        }
+    },
+    "textures": {
+        "wood": {
+            "base": "game:block/wood/itemframe/back"
+        },
+        "coal": {
+            "base": "game:block/coal/charcoal"
+        },
+        "cloth": {
+            "base": "game:block/cloth/basic/normal"
+        },
+        "brown": {
+            "base": "game:block/cloth/basic/brown"
+        },
+        "gray": {
+            "base": "game:block/cloth/basic/gray"
+        }
+    },
+    "creativeInventoryStacksByType": {
+        "frame-collection-*": [
+            {
+                "tabs": [
+                    "general",
+                    "decorative",
+                    "deskpictureframe"
+                ],
+                "stacks": [
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "copper"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "brass"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "gold"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "lead"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "molybdochalkos"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "platinum"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "tin"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "uranium"
+                            }
+                        }
+                    },
+                    {
+                        "type": "block",
+                        "code": "frame-collection-{collection}",
+                        "attributes": {
+                            "types": {
+                                "metal": "zinc"
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "blockmaterial": "Wood",
+    "lightAbsorption": 0,
+    "faceCullMode": "NeverCull",
+    "sidesolid": {
+        "all": false
+    },
+    "sideopaque": {
+        "all": false
+    },
+    "sideao": {
+        "all": false
+    },
+    "replaceable": 5001,
+    "resistance": 1,
+    "collisionbox": {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 0.0625,
+        "z2": 1
+    },
+    "selectionbox": {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0,
+        "x2": 1,
+        "y2": 0.0625,
+        "z2": 1
+    },
+    "sounds": {
+        "place": "game:player/buildhigh",
+        "break": "game:block/stickbreak",
+        "hit": "game:block/planks",
+        "walk": "game:walk/wood"
+    },
+    "rainPermeable": true,
+    "materialDensity": 600,
+    "heldTpIdleAnimation": "holdbothhandslarge",
+    "heldRightReadyAnimation": "heldblockready",
+    "heldTpUseAnimation": "twohandplaceblock",
+    "guiTransformByType": {
+        "*wall*": {
+            "translation": {
+                "x": -1,
+                "y": 3,
+                "z": 0
+            },
+            "rotation": {
+                "x": -18,
+                "y": -125,
+                "z": 20
+            },
+            "origin": {
+                "x": 0.5,
+                "y": 0.1,
+                "z": 0.5
+            },
+            "scale": 2.4
+        },
+        "*desk*": {
+            "translation": {
+                "x": -1,
+                "y": 3,
+                "z": 0
+            },
+            "rotation": {
+                "x": -71,
+                "y": -159,
+                "z": -18
+            },
+            "origin": {
+                "x": 0.5,
+                "y": 0.1,
+                "z": 0.5
+            },
+            "scaleXyz": {
+                "x": -2.36,
+                "y": 2.36,
+                "z": 2.36
+            }
+        }
+    },
+    "tpHandTransformByType": {
+        "*wall*": {
+            "translation": {
+                "x": -0.95,
+                "y": -0.5,
+                "z": -0.1
+            },
+            "rotation": {
+                "x": -85,
+                "y": -180,
+                "z": 107
+            },
+            "scale": 1.05
+        },
+        "*desk*": {
+            "translation": {
+                "x": -1,
+                "y": -0.4,
+                "z": -0.12
+            },
+            "rotation": {
+                "x": 17,
+                "y": -167,
+                "z": 80
+            },
+            "scale": 1.05
+        }
+    },
+    "groundTransformByType": {
+        "*": {
+            "translation": {
+                "x": 0,
+                "y": 0.12,
+                "z": 0
+            },
+            "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "origin": {
+                "x": 0.5,
+                "y": 0.1,
+                "z": 0.55
+            },
+            "scale": 5.5
+        }
+    },
+    "attributes": {
+        "groundstorable": true,
+        "displaycaseable": true,
+        "shelvable": true,
+        "groundStorageTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 90,
+                    "y": 90,
+                    "z": -90
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 1.04
+            }
+        },
+        "onDisplayTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 90,
+                    "y": 90,
+                    "z": -90
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 1.4
+            }
+        },
+        "onshelfTransformByType": {
+            "*": {
+                "translation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.1
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 90,
+                    "z": 0
+                },
+                "origin": {
+                    "x": 0.5,
+                    "y": 0.0,
+                    "z": 0.5
+                },
+                "scale": 1.04
+            }
+        }
+    }
+}
