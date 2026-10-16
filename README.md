@@ -1,68 +1,52 @@
 # Desk Picture Frame Plus
 
-A Vintage Story mod that adds picture frames — desk, wall and grouped — which display **your own
-images**. Drop PNG files into a folder, then choose which one each frame shows from inside the
-game.
+Metal frames for Vintage Story that show your own pictures, chosen in game.
 
-**Requires:** Attribute Rendering Library 3.1.0 or later.
+Drop PNG files into one folder, then sneak and right-click any frame to choose which picture it shows. Frames come in eight
+designs - on a desk, flush to a wall, and doubles, triples and combos - and in any metal plate the game has.
 
----
+**Download:** [Desk Picture Frame Plus on the Vintage Story Mod DB](https://mods.vintagestory.at/deskpictureframe)
 
-## Adding your own pictures
+## Requirements
 
-1. Put PNG files in:
+- Vintage Story 1.22 or later.
+- Nothing else. Since 1.2.0 the mod no longer needs Attribute Rendering Library - frames draw themselves.
+- Install on the server and on every client.
 
-   ```
-   VintagestoryData/ModData/deskpictureframe/userimages/textures/pictures/
-   ```
+## Using It
 
-   Any filenames you like, in as many subfolders as you like — the folders show up as
-   categories in the picker.
+- **Your pictures live here:** `VintagestoryData/ModData/deskpictureframe/userimages/textures/pictures` - name the files whatever you like.
+  Subfolders become a folder chooser in the picker.
+- **Pick a picture:** sneak and right-click a frame. A picture added while you play is there the next time you open the picker.
+- **PNG only, up to 1 MB each,** and up to 480 x 320 pixels (320 x 480 standing up) by default - a server can change the size.
+- **A frame keeps the picture you gave it** - pick it up, put it down, move it to a shelf or a display case, and it still shows it.
+- **Multiplayer:** a picture is uploaded once and everyone sees the same one, whoever placed the frame. Frames respect land claims.
 
-2. **Sneak and right-click any frame** to open the picture picker, and choose one.
+## Making Frames
 
-That is the whole workflow. Pictures can be added while the game is running; they appear in the
-picker without a restart.
+A metal plate and a piece of cloth in the crafting grid make a frame - any metal plate, any cloth. The frame comes out in the
+plate's metal. The handbook has a user guide, **Desk Picture Frame Plus: User Guide**, and each frame has one handbook page
+that lists the metal plates it can be made with.
 
-**PNG only, 1 MB or less per file.** Anything else is skipped, and the picker says how many it
-ignored and why.
+## For Server Owners
 
-### Sizes
+- Settings are in `ModConfig/DeskPictureFrameConfig.json` (Client and Server sections, each explained in the file), or in game
+  through Integrated Mod Manager, ConfigKit or ConfigLib.
+- Server settings: pictures per player (100), pictures on the server (5000), and the largest picture size (480 x 320).
+- `/dpf reload` reads the file again; `/dpf quota`, `/dpf quota list <player>` and `/dpf quota remove <player> <picture> confirm`
+  show and manage what each player has added; `/dpf images` reports the whole store.
+- Each player's pictures are in a folder named after them under `ModData/deskpictureframe/images`.
 
-Frames are wider than they are tall, or the other way round, and an image is stretched to fit —
-so match the shape or it will look squashed.
+## For Modders
 
-| frame | suggested image |
-| --- | --- |
-| desk frames | 128x64 landscape, 64x128 portrait |
-| wall and grouped frames | 384x256 landscape, 256x384 portrait |
+Frame designs and frame metals are JSON - no code. See [MODDERS.md](MODDERS.md).
 
-Larger images work and simply cost more memory.
+## Updating From An Earlier Version
 
----
-
-## Multiplayer
-
-**Everyone sees the same picture.** A picture is identified by a hash of its contents rather
-than by who placed it, so when you choose one it is stored on the server and served to every
-client that needs it. Someone else's frame shows *their* picture, not yours.
-
-Frames keep their picture when picked up and put back down, and a frame sitting on a shelf or
-in an inventory renders the same as a placed one.
-
----
-
-## Updating from 1.0.1
-
-**Nothing to do.** Frames placed on 1.0.1 keep their pictures — the old numbered-slot images are
-migrated to the new content-based ones on first load, and the old `ModConfig/deskpictureframe`
-folder is cleaned up for you.
-
-The numbered picture slots are gone. Pictures are no longer tied to a slot number, which is why
-filenames and folders are now yours to choose.
-
----
+Nothing to do. Frames already placed are converted when the world loads, keeping their metal and their picture, and your
+pictures are moved into the new folder for you. A boxed set of five from before 1.2.0 still in your world becomes an unknown
+block - break it on the ground to unpack the frames first.
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).

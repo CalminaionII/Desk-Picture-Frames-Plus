@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using DPF;
+using DeskPictureFrame.Handbook;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -34,16 +35,21 @@ namespace DeskPictureFrame
         // plain file I/O and works fine - it has to be here, because the client index below
         // reads the limits it sets. The new file is DeskPictureFrameConfig.json, deliberately
         // not the old name.
-        public override void AssetsLoaded(ICoreAPI api)
-        {
-            base.AssetsLoaded(api);
-            FrameMaterials.Load(api);
-        }
-
+        // The materials are read in AssetsFinalize, NOT AssetsLoaded: this mod system runs at ExecuteOrder 0.0, before the
+        // game's JSON patch loader (0.05), so a patch on materials.json (Pewter's, patches/pewter.json) was never in the
+        // file yet when it was read (Calm's log 2026-10-15: "9 frame material(s) listed" with Pewter installed). Nothing
+        // uses the materials before the creative tab is built here; the client draws with them from LevelFinalize.
         public override void AssetsFinalize(ICoreAPI api)
         {
             base.AssetsFinalize(api);
+            FrameMaterials.Load(api);
             FrameMaterials.FillCreativeTabs(api);
+        }
+
+        public override void Dispose()
+        {
+            HandbookGroups.Remove();
+            base.Dispose();
         }
 
         public override void StartPre(ICoreAPI api)
@@ -723,6 +729,10 @@ namespace DeskPictureFrame
 
             networkManager = new DeskPictureFrameNetworkManager();
             networkManager.InitClient(api);
+
+            // One handbook page per frame style, plus "Can be made with" (registered in FrameMaterials.FillCreativeTabs).
+            // Tools/Materials Kit/src/HandbookGroups.cs - rerun install-kit.py --handbook-only to update it.
+            HandbookGroups.Apply(api, "deskpictureframe.handbookgroups");
 
             // Frames draw themselves (FrameMesher) - per world, since the atlas is rebuilt.
             FrameMesher.Clear(api);
