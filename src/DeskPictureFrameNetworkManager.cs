@@ -59,6 +59,18 @@ namespace DeskPictureFrame
         /// reaches it is doing something no normal use of the mod requires.</summary>
         private readonly Dictionary<string, int> uploadsThisSession = new();
 
+        /// <summary>Most picture slots one frame packet may set. The biggest frame has four; this is
+        /// room to grow, and a bound on what a modified client can make every viewer download.</summary>
+        private const int MaxSlotsPerFrame = 8;
+
+        /// <summary>How soon the same player may be sent the same picture again. An honest client
+        /// asks once and then has it; without this a modified one could ask for the same megabyte
+        /// over and over and have the server read and send it every time.</summary>
+        private const long RepeatRequestMs = 10_000;
+
+        /// <summary>"playeruid|id" -> when it was last served (server milliseconds).</summary>
+        private readonly Dictionary<string, long> lastServed = new();
+
         private IServerNetworkChannel serverChannel;
         private ICoreServerAPI serverApi;
 
@@ -471,7 +483,7 @@ namespace DeskPictureFrame
             // that meant a frame could never be emptied over the network.
             string[] codes = packet.Codes ?? Array.Empty<string>();
             string[] sentIds = packet.Ids ?? Array.Empty<string>();
-            if (codes.Length != sentIds.Length) return;
+            if (codes.Length != sentIds.Length || codes.Length > MaxSlotsPerFrame) return;
 
             var pos = new BlockPos(packet.X, packet.Y, packet.Z);
 
@@ -510,7 +522,7 @@ namespace DeskPictureFrame
             for (int i = 0; i < codes.Length; i++)
             {
                 string id = sentIds[i];
-                if (!DeskPictureFrameImageStore.IsWellFormedId(id)) continue;
+                if (!IsSlotCode(codes[i]) || !DeskPictureFrameImageStore.IsWellFormedId(id)) continue;
 
                 if ((quotaFull || storeFull)
                     && !DeskPictureFrameImageStore.PlayerHasImage(player.PlayerName, id))
@@ -525,6 +537,23 @@ namespace DeskPictureFrame
             if (refused) TellThemWhy(player, quotaFull);
 
             be.SetImageIds(ids);
+        }
+
+        /// <summary>
+        /// A picture slot's texture code: "image", "image1", "image2"... The ids were always checked;
+        /// the codes were not, so a modified client could store any number of made-up keys on a
+        /// frame - saved with the world and sent to everyone who loads it. The server cannot list a
+        /// frame's real slots (Block.Textures is client only), so this checks the form instead.
+        /// </summary>
+        private static bool IsSlotCode(string code)
+        {
+            if (code == null || !code.StartsWith("image") || code.Length > 13) return false;
+            for (int i = "image".Length; i < code.Length; i++)
+            {
+                char c = code[i];
+                if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))) return false;
+            }
+            return true;
         }
 
         /// <summary>Says which of the two full things happened, once. Quota first: it is the
@@ -727,6 +756,18 @@ namespace DeskPictureFrame
         private void OnServerRequest(IServerPlayer player, ImageRequestPacket packet)
         {
             if (packet?.Id == null || !DeskPictureFrameImageStore.IsWellFormedId(packet.Id)) return;
+
+            // The same picture again, this soon: already sent, so not read and sent again.
+            long now = serverApi.World.ElapsedMilliseconds;
+            string key = player.PlayerUID + "|" + packet.Id;
+            if (lastServed.TryGetValue(key, out long when) && now - when < RepeatRequestMs) return;
+            if (lastServed.Count > 2000)
+            {
+                var expired = new List<string>();
+                foreach (var pair in lastServed) if (now - pair.Value >= RepeatRequestMs) expired.Add(pair.Key);
+                foreach (string old in expired) lastServed.Remove(old);
+            }
+            lastServed[key] = now;
 
             // Always answer, even with nothing, so a waiting client stops waiting instead of
             // sitting on the placeholder for the rest of the session.

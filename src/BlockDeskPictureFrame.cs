@@ -72,9 +72,15 @@ namespace DeskPictureFrame
             if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEDeskPictureFrame be)
             {
                 BlockPos blockPos = blockSel.DidOffset ? blockSel.Position.AddCopy(blockSel.Face.Opposite) : blockSel.Position;
-                double dx = byPlayer.Entity.Pos.X - (blockPos.X + blockSel.HitPosition.X);
-                double dz = byPlayer.Entity.Pos.Z - (blockPos.Z + blockSel.HitPosition.Z);
-                float yaw = (float)Math.Atan2(dx, dz);
+                // No player (another mod placing it - a builder, a schematic): no one to face, so it
+                // faces the way it was drawn rather than crashing on the missing player.
+                float yaw = 0f;
+                if (byPlayer?.Entity != null)
+                {
+                    double dx = byPlayer.Entity.Pos.X - (blockPos.X + blockSel.HitPosition.X);
+                    double dz = byPlayer.Entity.Pos.Z - (blockPos.Z + blockSel.HitPosition.Z);
+                    yaw = (float)Math.Atan2(dx, dz);
+                }
                 // A wall frame faces out of its wall; anything else faces whoever placed it.
                 float angle = wallFace != null
                     ? AngleFacing(wallFace)
@@ -82,7 +88,7 @@ namespace DeskPictureFrame
 
                 be.MeshAngleRad = angle;
                 be.AutoBoxesAngleChanged();
-                be.OwnerUid = byPlayer.PlayerUID;
+                be.OwnerUid = byPlayer?.PlayerUID;
                 be.blockMesh = null;
 
                 // A FRAME THAT ALREADY HOLDS PICTURES KEEPS THEM, and the SERVER applies
@@ -431,7 +437,8 @@ namespace DeskPictureFrame
             //
             // With no player at all (an explosion, or another mod breaking the block) there is
             // no inventory to give to, so that case goes through base, which handles null.
-            if (byPlayer == null)
+            // Creative too: the game gives nothing for a block broken in creative, and base does that.
+            if (byPlayer == null || byPlayer.WorldData?.CurrentGameMode == EnumGameMode.Creative)
             {
                 base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
                 return;

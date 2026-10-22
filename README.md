@@ -33,7 +33,7 @@ that lists the metal plates it can be made with.
 - Settings are in `ModConfig/DeskPictureFrameConfig.json` (Client and Server sections, each explained in the file), or in game
   through Integrated Mod Manager, ConfigKit or ConfigLib.
 - Server settings: pictures per player (100), pictures on the server (5000), and the largest picture size (480 x 320).
-- `/dpf reload` reads the file again; `/dpf quota`, `/dpf quota list <player>` and `/dpf quota remove <player> <picture> confirm`
+- `/dpf config reload` reads the file again; `/dpf quota`, `/dpf quota list <player>` and `/dpf quota remove <player> <picture> confirm`
   show and manage what each player has added; `/dpf images` reports the whole store.
 - Each player's pictures are in a folder named after them under `ModData/deskpictureframe/images`.
 
