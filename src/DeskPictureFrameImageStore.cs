@@ -824,9 +824,19 @@ namespace DeskPictureFrame
             }
         }
 
+        /// <summary>
+        /// What the last index learnt about each file: its size and write time when read, its pixel
+        /// size and its id. The picker re-indexes every time it opens, and reading and hashing every
+        /// picture each time froze the game for a moment with a full folder - so a file whose size
+        /// and write time have not moved keeps its id, and only new or edited pictures are read.
+        /// Main thread only, like every caller of the index.
+        /// </summary>
+        private static Dictionary<string, (long Bytes, DateTime Written, int Width, int Height, string Id)> knownFiles = new();
+
         public static void BuildClientCacheFromLocal(ICoreAPI api, string picturesRoot)
         {
             RemoveConvertedFolder(api);
+            var known = new Dictionary<string, (long Bytes, DateTime Written, int Width, int Height, string Id)>();
 
             var ids = new Dictionary<string, string>();
             var sizes = new Dictionary<string, (int Width, int Height)>();
@@ -846,9 +856,17 @@ namespace DeskPictureFrame
 
                     try
                     {
+                        var info = new FileInfo(file);
+                        long bytes = info.Length;
+                        DateTime written = info.LastWriteTimeUtc;
+                        bool seen = knownFiles.TryGetValue(file, out var before)
+                                    && before.Bytes == bytes && before.Written == written;
+
                         // Header first, so an oversized file is refused without reading or
                         // hashing all of it.
-                        if (!TryReadPngSize(file, out int w, out int h) || !WithinSizeLimit(w, h))
+                        int w = 0, h = 0;
+                        if (seen) { w = before.Width; h = before.Height; }
+                        if ((!seen && !TryReadPngSize(file, out w, out h)) || !WithinSizeLimit(w, h))
                         {
                             oversized.Add(Path.GetFileName(file) + "  " + w + "x" + h);
                             continue;
@@ -861,16 +879,16 @@ namespace DeskPictureFrame
                         // 3.1 MB. A picture inside the pixel cap can be far over this one, and
                         // it must be refused HERE rather than at upload, or it reaches the picker
                         // and fails invisibly later.
-                        long bytes = new FileInfo(file).Length;
                         if (bytes > MaxImageBytes)
                         {
                             toobig.Add($"{Path.GetFileName(file)}  {bytes / 1024f / 1024f:0.0} MB");
                             continue;
                         }
 
-                        byte[] data = File.ReadAllBytes(file);
-                        string id = IdOf(data);
+                        // Unchanged since the last index: same id, nothing to read.
+                        string id = seen ? before.Id : IdOf(File.ReadAllBytes(file));
                         if (id == null) continue;
+                        known[file] = (bytes, written, w, h, id);
 
                         sizes[id] = (w, h);
 
@@ -953,6 +971,7 @@ namespace DeskPictureFrame
             LocalIds = ids;
             LocalSizes = sizes;
             LocalPaths = paths;
+            knownFiles = known;   // only what is still there, so a deleted file is forgotten
             indexedLongSide = MaxLongSide;
             indexedShortSide = MaxShortSide;
         }

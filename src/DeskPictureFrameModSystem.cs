@@ -107,7 +107,7 @@ namespace DeskPictureFrame
         /// is the post-write one. Never fold the events into one pending reload - that swallowed
         /// the post-write copy and read stale values.
         ///
-        /// The server side is the same code as `/dpf reload`, so a manager and the command
+        /// The server side is the same code as `/dpf config reload`, so a manager and the command
         /// cannot drift apart.
         /// </summary>
         private void ListenForConfigReloads(ICoreAPI api)
@@ -169,7 +169,7 @@ namespace DeskPictureFrame
 
         /// <summary>
         /// SERVER: re-read, clamp, apply, and tell everyone connected the new caps and quota.
-        /// Shared by `/dpf reload` and the config-manager listener.
+        /// Shared by `/dpf config reload` and the config-manager listener.
         /// </summary>
         private static void ApplyServerConfigReload(ICoreServerAPI api)
         {
